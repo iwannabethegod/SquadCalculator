@@ -141,7 +141,10 @@ public static class MapControl
         
         if (e.ClickCount == 2)
         {
-           CreateTarget();
+            if (SelectedMap != null)
+            {
+                CreateTarget();
+            }
         }
             
         var pos = e.GetPosition(OuterCanvas);
@@ -154,7 +157,7 @@ public static class MapControl
         {
             _isMouseMove = false;
         }
-       
+        
     }
 
     public static void MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -310,7 +313,8 @@ public static class MapControl
 
     
     private static void CreateTarget()
-    { 
+    {
+        Console.WriteLine("target");
         TargetPoint target = new TargetPoint(50, 50, PointType.Target, _targetImage);
         target.ScaleTransform.ScaleX = SelectZoom(_currentZoom, true);
         target.ScaleTransform.ScaleY = SelectZoom(_currentZoom, true);

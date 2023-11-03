@@ -7,7 +7,7 @@
         xmlns:viewModels="clr-namespace:SquadCalculator.ViewModels"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="Squad Calculator" Height="900" Width="1200" Name="MWindow">
+        Title="Squad Calculator" Icon="window_icon.png" WindowStartupLocation="CenterScreen" Height="900" Width="1200" Name="MWindow">
     <Window.Resources>
         <viewModels:VersionViewModel x:Key="VersionViewModel"></viewModels:VersionViewModel>
         <viewModels:CoffeeViewModel x:Key="CoffeeViewModel"></viewModels:CoffeeViewModel>
