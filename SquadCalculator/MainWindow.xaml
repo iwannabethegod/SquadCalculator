@@ -1,0 +1,161 @@
+﻿<Window x:Class="SquadCalculator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SquadCalculator"
+        xmlns:viewModels="clr-namespace:SquadCalculator.ViewModels"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Title="Squad Calculator" Height="900" Width="1200" Name="MWindow">
+    <Window.Resources>
+        <viewModels:VersionViewModel x:Key="VersionViewModel"></viewModels:VersionViewModel>
+        <viewModels:CoffeeViewModel x:Key="CoffeeViewModel"></viewModels:CoffeeViewModel>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <viewModels:MainViewModel x:Name="Context"></viewModels:MainViewModel>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".18*"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height=".18*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="0.25*"/>
+            <RowDefinition Height="0.27*" />
+            <RowDefinition Height="0.65*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MaxWidth="200" Width=".2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!--<ScrollViewer Grid.Column="0" Grid.Row="0" >
+            <StackPanel >
+                <ListBox x:Name="MapsList" 
+                         ItemsSource="{Binding Maps.ListMaps}" 
+                         SelectedItem="{Binding SelectedItem, 
+                         Mode=TwoWay, 
+                         UpdateSourceTrigger=PropertyChanged}" 
+                         SelectionMode="Single"
+                         SelectionChanged="MapsList_OnSelectionChanged">
+                    <ListBox.ItemTemplate >
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Path=Name}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </ScrollViewer>-->
+        <ComboBox x:Name="MapsList" ItemsSource="{Binding Maps.ListMaps}"
+                  SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectionChanged="MapsList_OnSelectionChanged"
+                  VerticalAlignment="Stretch"
+                  VerticalContentAlignment="Center"
+                  >
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock FontSize="14" Text="{Binding Path=Name}"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox Grid.Row="2" x:Name="WeaponsList" ItemsSource="{Binding Weapons}"
+                  SelectedItem="{Binding SelectedWeapon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  VerticalAlignment="Stretch"
+                  VerticalContentAlignment="Center">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock FontSize="14" Text="{Binding Path=Name}"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        
+        <Canvas Grid.Row="0" 
+                x:Name="OuterCanvas" 
+                ClipToBounds="True"
+                Grid.Column="1" Grid.RowSpan="8"
+                Background="#353535">
+            <Canvas x:Name="CanvasDrawingArea" 
+                            ClipToBounds="True"
+                            IsHitTestVisible="True"
+                            Height="4096"
+                            Width="4096"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            MouseLeftButtonDown="CanvasMouseLeftButtonDown"
+                            MouseLeftButtonUp="CanvasMouseLeftButtonUp"
+                            MouseRightButtonDown="CanvasMouseRighButtonDown" 
+                            MouseMove="CanvasMouseMove"
+                            MouseWheel="CanvasMouseWheel"
+                            MouseLeave="CanvasDrawingArea_OnMouseLeave"
+                            >
+                <Rectangle
+                            ClipToBounds="True" 
+                            IsHitTestVisible="True" 
+                            x:Name="MapImage" 
+                            Opacity="{Binding ElementName=MapOpacitySlider, Path=Value}"
+                            Height="{Binding ElementName = CanvasDrawingArea, Path=Height}" 
+                            Width="{Binding ElementName = CanvasDrawingArea, Path=Width}" >
+                    <Rectangle.Fill>
+                        <ImageBrush x:Name="ImageBrush1" Stretch="Fill" ImageSource="{Binding SelectedItem.MapPath}"></ImageBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle
+                    Canvas.Left="{Binding SelectedItem.OffsetX}"
+                    Canvas.Top="{Binding SelectedItem.OffsetY}"
+                    ClipToBounds="True" 
+                    IsHitTestVisible="True" 
+                    x:Name="HeightMapImage" 
+                    Opacity="{Binding ElementName=HeightMapOpacitySlider, Path=Value}"
+                    Height="{Binding SelectedItem.Y}" 
+                    Width="{Binding SelectedItem.X}" >
+                    <Rectangle.Fill>
+                        <ImageBrush x:Name="ImageBrush2" Stretch="Fill" ImageSource="{Binding SelectedItem.HeightMapPath}"></ImageBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="CanvasScale" ></ScaleTransform>
+                        <TranslateTransform x:Name="CanvasTransform"></TranslateTransform>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
+            </Canvas>
+
+        </Canvas>
+        <StackPanel VerticalAlignment="Center" Grid.Row="1">
+            <Label Content="Map Opacity" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" FontSize="12"/>
+            <Slider Name="MapOpacitySlider" Value="1" Minimum="0" Maximum="1" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="180" Height="20" IsSelectionRangeEnabled="True" SelectionStart="0" SelectionEnd="{Binding ElementName=MapOpacitySlider, Path=Value}" IsMoveToPointEnabled="True" />
+            <Label Content="Heightmap Opacity" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" Width="120"/>
+            <Slider Name="HeightMapOpacitySlider" Value="0.0" Minimum="0" Maximum="1" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="180" Height="20" IsSelectionRangeEnabled="True" SelectionStart="0" SelectionEnd="{Binding ElementName=HeightMapOpacitySlider, Path=Value}" IsMoveToPointEnabled="True"/>
+        </StackPanel>
+        
+        <StackPanel DataContext="{StaticResource VersionViewModel}" Visibility="{Binding VersionChecker.Visibility}" Grid.Row="5">
+            <TextBlock Text="New version available" FontSize="15"></TextBlock>
+            <TextBlock>
+                <Hyperlink NavigateUri="https://github.com/iwannabethegod/SquadMortarCalculator" FontSize="20" Click="Hyperlink_OnClick">Download</Hyperlink>
+            </TextBlock>
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="Loaded">
+                    <b:InvokeCommandAction Command="{Binding LoadedCommand}" />
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </StackPanel>
+        
+        <Button Grid.Row="6" Click="ButtonBase_OnClick">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="coffee.png" ></Image>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="14" TextWrapping="Wrap" DataContext="{StaticResource CoffeeViewModel}" Grid.Row="7" Text="{Binding Coffee.DonationText}"></TextBlock>
+    </Grid>
+</Window>

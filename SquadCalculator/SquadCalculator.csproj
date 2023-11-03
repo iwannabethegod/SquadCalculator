@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+		<Version>1.0.0.0</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="coffee.png" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+      <PackageReference Include="System.Drawing.Common" Version="8.0.0-rc.2.23479.14" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <Resource Include="coffee.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+
+
+
+
+</Project>
