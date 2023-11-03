@@ -29,7 +29,7 @@ public class VersionChecker : INotifyPropertyChanged
     
 
     private string _gitHubVersionUrl =
-        "https://raw.githubusercontent.com/iwannabethegod/SquadCalculator/master/SquadCalculator/Version";
+        "https://raw.githubusercontent.com/iwannabethegod/SquadCalculator/master/Calculator/Version";
 
     private async Task<string> GetLatestVersionFromGitHubAsync()
     {
