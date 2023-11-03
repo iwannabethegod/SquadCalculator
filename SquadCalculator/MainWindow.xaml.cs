@@ -67,7 +67,6 @@ namespace SquadCalculator
         private void Hyperlink_OnClick(object sender, RoutedEventArgs e)
         {
             string url = ((Hyperlink)sender).NavigateUri.ToString();
-            Console.WriteLine(url);
             
             Process.Start(
                 new ProcessStartInfo()

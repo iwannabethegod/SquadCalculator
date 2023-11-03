@@ -1,4 +1,5 @@
 ﻿using System;
+using SquadCalculator.Models;
 
 namespace SquadCalculator.ViewModels;
 
