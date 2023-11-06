@@ -19,10 +19,9 @@ namespace SquadCalculator
         }
         
         public string Distance { get; set; } = "";
-
         public string Azimuth { get; set; } = "";
-
-        public string Elevation { get; set; } = "";
+        public string Elevation_High { get; set; } = "";
+        public string Elevation_Low { get; set; } = "";
 
         private double MilToDeg(double mil)
         {
@@ -83,19 +82,37 @@ namespace SquadCalculator
             return bearing;
         }
 
-        private double GetElevation(double x, double y, Weapon weapon)
+        private void GetElevation(double x, double y, Weapon weapon, out double trajectoryAngleHigh, out double trajectoryAngleLow)
         {
             double v = weapon.Velocity;
             double g = weapon.Gravity;
             var displacement = Math.Sqrt(Math.Pow(v, 4) - g * (g * Math.Pow(x, 2) + 2 * y * Math.Pow(v, 2)));
-            var trajectoryAngle = Math.Atan((Math.Pow(v, 2) + displacement) / (g * x));
+            
+            trajectoryAngleHigh = 0;
+            trajectoryAngleLow = 0;
+            Console.WriteLine(weapon.Name);
+            Console.WriteLine(weapon.AngleType);
+            if (weapon.AngleType == AngleType.High || weapon.AngleType == AngleType.Both)
+            {
+                trajectoryAngleHigh = Math.Atan((Math.Pow(v, 2) + displacement ) / (g * x));
+            }
+            if (weapon.AngleType == AngleType.Low || weapon.AngleType == AngleType.Both)
+            {
+                trajectoryAngleLow = Math.Atan((Math.Pow(v, 2) - displacement ) / (g * x));
+            }
+            
 
             if (weapon.AngleUnit == AngleUnit.Milliradians)
             {
-                return RadToMil(trajectoryAngle);
+                trajectoryAngleHigh = RadToMil(trajectoryAngleHigh);
+                trajectoryAngleLow = RadToMil(trajectoryAngleLow);
             }
-
-            return RadToDeg(trajectoryAngle);
+            else
+            {
+                trajectoryAngleHigh = RadToDeg(trajectoryAngleHigh);
+                trajectoryAngleLow = RadToDeg(trajectoryAngleLow);
+            }
+            
         }
 
         private double GetHeight((double, double) a, (double, double) b, Bitmap heightMapImage)
@@ -122,13 +139,24 @@ namespace SquadCalculator
             var height = GetHeight(fireCoordinates.MortarPositionOnHeightMap, fireCoordinates.TargetPositionOnHeightMap, heightMap);
             var distance = GetDist(fireCoordinates.MortarPositionOnMap, fireCoordinates.TargetPositionOnMap);
             var bearing = GetBearing(fireCoordinates.MortarPositionOnMap, fireCoordinates.TargetPositionOnMap);
-            var elevation = GetElevation(distance, height, weapon);
+
+            GetElevation(distance, height, weapon, out double elevationHigh, out double elevationLow);
+           
             
             Distance = Math.Round(distance, 2).ToString(CultureInfo.InvariantCulture);;
-            Elevation = Math.Round(elevation, 2).ToString(CultureInfo.InvariantCulture);
+            Elevation_High = Math.Round(elevationHigh, 1).ToString(CultureInfo.InvariantCulture);
+            Elevation_Low = Math.Round(elevationLow, 1).ToString(CultureInfo.InvariantCulture);
             Azimuth = Math.Round(bearing, 2).ToString(CultureInfo.InvariantCulture);
+
+            Console.WriteLine("Calculation call");
+            Console.WriteLine(Elevation_High + " HIGH");
+            Console.WriteLine(Elevation_Low + " LOW");
             
-            FireResult fireResult = new FireResult(Math.Round(distance,2).ToString() + " m", Math.Round(bearing,2).ToString() + " °", Math.Round(elevation,2).ToString());
+            FireResult fireResult = new FireResult(
+                Distance + " m",
+                Azimuth + " °", 
+                Elevation_High,
+                "|| " + Elevation_Low);
             return fireResult;
         }
       

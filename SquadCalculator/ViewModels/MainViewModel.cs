@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using SquadCalculator.Models;
 using SquadCalculator.Weapons;
 
 namespace SquadCalculator.ViewModels;
@@ -10,7 +11,10 @@ public class MainViewModel : INotifyPropertyChanged
     public static List<Weapon> Weapons { get; set; } = new List<Weapon>()
     {
         new Mortar(),
+        new TechnicalMortar(),
         new BM21Grad(),
+        new HellCannon(),
+        //new Technical_UB32()
     };
     public static Maps Maps { get; set; } = new Maps();
     
@@ -60,4 +64,5 @@ public class MainViewModel : INotifyPropertyChanged
         OnPropertyChanged(propertyName);
         return true;
     }
+   
 }

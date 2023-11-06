@@ -1,12 +1,11 @@
 ﻿namespace SquadCalculator.Weapons;
 
-public class BM21Grad : Weapon
+public class Technical_UB32 : Weapon
 {
-    public override string Name { get; set; } = "BM-21 Grad";
-    public override double Velocity { get; set; } = 200.0;
-    public override double Gravity { get; set; } = 9.8 * 2;
+    public override string Name { get; set; } = "Technical UB-32";
+    public override double Velocity { get; set; } = 250;
+    public override double Gravity { get; set; } = 9.8 ;
     public override AngleUnit AngleUnit { get; set; } = AngleUnit.Degrees;
     public override AngleType AngleType { get; set; } = AngleType.Both;
     public override int MaxRange { get; set; } = 0;
-    
 }

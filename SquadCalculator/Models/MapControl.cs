@@ -227,20 +227,20 @@ public static class MapControl
     }
       
     private static void ChangeSize(Point mousePos, MouseWheelEventArgs e)
+    {
+        if (_currentZoom > ZoomLevel.ZoomLevel1 || _currentZoom < ZoomLevel.ZoomLevel7)
         {
-            if (_currentZoom > ZoomLevel.ZoomLevel1 || _currentZoom < ZoomLevel.ZoomLevel7)
-            {
-                double absoluteX = mousePos.X * CanvasScale.ScaleX + CanvasTransform.X;
-                double absoluteY = mousePos.Y * CanvasScale.ScaleY + CanvasTransform.Y;
-                double zoom = SelectZoom(_currentZoom);
+            double absoluteX = mousePos.X * CanvasScale.ScaleX + CanvasTransform.X;
+            double absoluteY = mousePos.Y * CanvasScale.ScaleY + CanvasTransform.Y;
+            double zoom = SelectZoom(_currentZoom);
                 
-                CanvasScale.ScaleX = zoom;
-                CanvasScale.ScaleY = zoom;
+            CanvasScale.ScaleX = zoom;
+            CanvasScale.ScaleY = zoom;
                 
-                CanvasTransform.X = absoluteX - mousePos.X * CanvasScale.ScaleX;
-                CanvasTransform.Y = absoluteY - mousePos.Y * CanvasScale.ScaleY;
-            }
+            CanvasTransform.X = absoluteX - mousePos.X * CanvasScale.ScaleX;
+            CanvasTransform.Y = absoluteY - mousePos.Y * CanvasScale.ScaleY;
         }
+    }
 
     private static void ChangeIconSize()
     {
@@ -333,7 +333,6 @@ public static class MapControl
         target.TargetReady();
         
         TranslateCoordinates(target);
-            
         target.SetFireResult(Shoot(_fireCoordinates));
         _targets.Add(target);
          
@@ -428,9 +427,11 @@ public static class MapControl
         RowDefinition row2 = new RowDefinition();
         ColumnDefinition column0 = new ColumnDefinition();
         ColumnDefinition column1 = new ColumnDefinition();
+        ColumnDefinition column2 = new ColumnDefinition();
         
-        column0.Width = new GridLength(150, GridUnitType.Pixel);
+        column0.Width = new GridLength(1, GridUnitType.Auto);
         column1.Width = new GridLength(1, GridUnitType.Auto);
+        column2.Width = new GridLength(1, GridUnitType.Auto);
         row0.Height = new GridLength(1, GridUnitType.Auto);
         row1.Height = new GridLength(1, GridUnitType.Auto);
         row2.Height = new GridLength(1, GridUnitType.Auto);
@@ -440,10 +441,13 @@ public static class MapControl
         grid.RowDefinitions.Add(row2);
         grid.ColumnDefinitions.Add(column0);
         grid.ColumnDefinitions.Add(column1);
+        grid.ColumnDefinitions.Add(column2);
    
         TextBlock distance = new TextBlock();
         TextBlock elevation = new TextBlock();
+        TextBlock elevationLow = new TextBlock();
         TextBlock azimuth = new TextBlock();
+        TextBlock splitter = new TextBlock(){ Text = " " };
         
           
         Binding distanceBinding = new Binding("Distance");
@@ -453,6 +457,10 @@ public static class MapControl
         Binding elevationBinding = new Binding("Elevation");
         elevationBinding.Source = target.TargetFireResult;
         elevation.SetBinding(TextBlock.TextProperty, elevationBinding);
+        
+        Binding elevationLowBinding = new Binding("ElevationLow");
+        elevationLowBinding.Source = target.TargetFireResult;
+        elevationLow.SetBinding(TextBlock.TextProperty, elevationLowBinding);
 
         Binding azimuthBinding = new Binding("Azimuth");
         azimuthBinding.Source = target.TargetFireResult;
@@ -460,18 +468,27 @@ public static class MapControl
         
         distance.TextAlignment = TextAlignment.Left;
         elevation.TextAlignment = TextAlignment.Left;
+        elevationLow.TextAlignment = TextAlignment.Left;
         azimuth.TextAlignment = TextAlignment.Left;
+        splitter.TextAlignment = TextAlignment.Center;
+        
         distance.FontSize = 30;
         elevation.FontSize = 40;
+        elevationLow.FontSize = 40;
         azimuth.FontSize = 30;
+        splitter.FontSize = 40;
         
         distance.Foreground = Brushes.Red;
         elevation.Foreground = Brushes.Red;
+        elevationLow.Foreground = Brushes.Red;
         azimuth.Foreground = Brushes.Red;
+        splitter.Foreground = Brushes.Red;
         
         distance.FontWeight = FontWeights.UltraBold;
         elevation.FontWeight = FontWeights.UltraBold;
+        elevationLow.FontWeight = FontWeights.UltraBold;
         azimuth.FontWeight = FontWeights.UltraBold;
+        splitter.FontWeight = FontWeights.UltraBold;
         
         
         DropShadowEffect dropShadowEffect = new DropShadowEffect();
@@ -480,21 +497,35 @@ public static class MapControl
         dropShadowEffect.ShadowDepth = 0;
 
         elevation.Effect = dropShadowEffect;
+        elevationLow.Effect = dropShadowEffect;
         distance.Effect = dropShadowEffect;
         azimuth.Effect = dropShadowEffect;
+        splitter.Effect = dropShadowEffect;
         
         Grid.SetRow(elevation,0);
-        Grid.SetColumnSpan(elevation,2);
+        Grid.SetColumn(elevation, 0);
+        
+        Grid.SetRow(splitter, 0);
+        Grid.SetColumn(splitter, 1);
+        
+        Grid.SetRow(elevationLow,0);
+        Grid.SetColumn(elevationLow, 3);
         
         Grid.SetRow(azimuth, 1);
         Grid.SetColumn(azimuth,0);
+        Grid.SetColumnSpan(azimuth, 3);
         
         Grid.SetColumn(distance,0);
         Grid.SetRow(distance, 2);
+        Grid.SetColumnSpan(distance, 3);
         
         grid.Children.Add(distance);
         grid.Children.Add(elevation);
+        grid.Children.Add(elevationLow);
         grid.Children.Add(azimuth);
+        grid.Children.Add(splitter);
         return grid;
     }
+
+   
 }

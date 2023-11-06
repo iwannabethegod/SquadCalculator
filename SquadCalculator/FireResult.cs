@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -9,6 +10,7 @@ public class FireResult : INotifyPropertyChanged
     private string _distance;
     private string _azimuth;
     private string _elevation;
+    private string _elevationLow;
     public string Distance
     {
         get => _distance;
@@ -38,12 +40,30 @@ public class FireResult : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+    public string ElevationLow
+    {
+        get => _elevationLow;
+        set
+        {
+            if (value == "|| 0")
+            {
+                _elevationLow = " ";
+            }
+            else
+            {
+                _elevationLow = value;
+            }
+       
+            OnPropertyChanged();
+        }
+    }
 
-    public FireResult(string distance, string azimuth, string elevation)
+    public FireResult(string distance, string azimuth, string elevation, string elevationLow)
     {
         Distance = distance;
         Azimuth = azimuth;
         Elevation = elevation;
+        ElevationLow = elevationLow;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -63,6 +83,6 @@ public class FireResult : INotifyPropertyChanged
 
     public override string ToString()
     {
-        return $"FireResult: {Distance} {Azimuth} {Elevation}";
+        return $"FireResult: {Distance} {Azimuth} {Elevation} {ElevationLow}";
     }
 }

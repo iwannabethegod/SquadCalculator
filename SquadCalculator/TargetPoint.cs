@@ -5,7 +5,7 @@ namespace SquadCalculator;
 
 public class TargetPoint : PointBase
 {
-    public FireResult? TargetFireResult { get; private set; } = new FireResult("0", "0","0");
+    public FireResult? TargetFireResult { get; private set; } = new FireResult("", "","", "");
     
     public delegate FireResult TargetHandler(FireCoordinates f);
     public event TargetHandler? ReadyTarget;
@@ -24,7 +24,7 @@ public class TargetPoint : PointBase
     }
     public void TargetReady()
     {
-        OnReadyTarget();
+        //OnReadyTarget();
     }
 
     public void SetFireResult(FireResult fireResult)
@@ -32,6 +32,7 @@ public class TargetPoint : PointBase
         TargetFireResult.Distance = fireResult.Distance;
         TargetFireResult.Azimuth = fireResult.Azimuth;
         TargetFireResult.Elevation = fireResult.Elevation;
+        TargetFireResult.ElevationLow = fireResult.ElevationLow;
     }
     
     protected override void OnMouseMove(MouseEventArgs e)
