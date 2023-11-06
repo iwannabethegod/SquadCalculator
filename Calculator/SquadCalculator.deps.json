@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v7.0": {
-      "SquadCalculator/1.0.1.0": {
+      "SquadCalculator/1.0.2.0": {
         "dependencies": {
           "Microsoft.Xaml.Behaviors.Wpf": "1.1.39",
           "System.Drawing.Common": "8.0.0-rc.2.23479.14"
@@ -53,7 +53,7 @@
     }
   },
   "libraries": {
-    "SquadCalculator/1.0.1.0": {
+    "SquadCalculator/1.0.2.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

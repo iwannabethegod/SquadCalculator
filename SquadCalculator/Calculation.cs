@@ -90,8 +90,8 @@ namespace SquadCalculator
             
             trajectoryAngleHigh = 0;
             trajectoryAngleLow = 0;
-            Console.WriteLine(weapon.Name);
-            Console.WriteLine(weapon.AngleType);
+            
+            
             if (weapon.AngleType == AngleType.High || weapon.AngleType == AngleType.Both)
             {
                 trajectoryAngleHigh = Math.Atan((Math.Pow(v, 2) + displacement ) / (g * x));
@@ -147,10 +147,6 @@ namespace SquadCalculator
             Elevation_High = Math.Round(elevationHigh, 1).ToString(CultureInfo.InvariantCulture);
             Elevation_Low = Math.Round(elevationLow, 1).ToString(CultureInfo.InvariantCulture);
             Azimuth = Math.Round(bearing, 2).ToString(CultureInfo.InvariantCulture);
-
-            Console.WriteLine("Calculation call");
-            Console.WriteLine(Elevation_High + " HIGH");
-            Console.WriteLine(Elevation_Low + " LOW");
             
             FireResult fireResult = new FireResult(
                 Distance + " m",

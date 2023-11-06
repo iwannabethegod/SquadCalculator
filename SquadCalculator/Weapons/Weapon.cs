@@ -22,6 +22,6 @@ public abstract class Weapon
     public abstract double Gravity { get; set; }
     public abstract AngleUnit AngleUnit { get; set; }
     public abstract AngleType AngleType { get; set; }
-    public abstract int MaxRange { get; set; } 
+    public abstract int MaxRange { get; set; }
 
 }
